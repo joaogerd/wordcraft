@@ -1,6 +1,6 @@
 # Scientific LaTeX Importer
 
-Status: **M1 in progress**. The goal is to convert scientific LaTeX projects into editable DOCX documents with a balanced priority: **semantic correctness > editability > document structure > typography > pagination**. Pandoc is **not** a required runtime dependency.
+Status: **M1 implementation complete; PR review and merge pending**. The goal is to convert scientific LaTeX projects into editable DOCX documents with a balanced priority: **semantic correctness > editability > document structure > typography > pagination**. Pandoc is **not** a required runtime dependency.
 
 ## Entry points
 

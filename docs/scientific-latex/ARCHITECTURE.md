@@ -42,3 +42,16 @@ Resolve image data instead of emitting `[Picture: …]`. Produce actual editable
 ## Trust boundary
 
 Do not execute arbitrary TeX during document import. Optional TeX compilation for reference PDF requires isolation, no shell-escape, restricted filesystem/network access and resource limits. Untrusted ZIP files must not escape their extraction root.
+
+## M1 resolver contract
+
+`wordcraft_formats::latex_project::load(root, main)` canonicalizes the project root and every file,
+rejects lexical traversal before opening a target, and rejects canonical paths outside the root (which
+also covers symlink escape). It expands only static, braced `\input` and `\include` commands and keeps
+all other bytes in source order. The cumulative read budget is 32 MiB and the active include depth is
+24 files. Cycles, invalid UTF-8, resource-limit failures, and I/O failures are typed errors; unsupported
+or malformed include syntax is preserved and diagnosed.
+
+The scanner treats TeX comments, escaped commands, `\verb`/`\verb*`, and the literal environments
+`verbatim`, `verbatim*`, `Verbatim`, `lstlisting`, `minted`, `alltt`, and `comment` as non-expandable.
+It does not execute macros or TeX and intentionally does not resolve dynamic include filenames.

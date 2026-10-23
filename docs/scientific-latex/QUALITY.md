@@ -21,6 +21,17 @@ These are **targets, not current measured performance**:
 
 Never average away a semantic failure with a good visual score.
 
+## M1 measured evidence (2026-10-23)
+
+The resolver regression suite covers nested resolution behavior, parent traversal,
+Unix symlink escape, cycles, the 24-file nesting limit, invalid UTF-8, malformed include arguments,
+comments and escaped commands, inline and environmental verbatim content, and exact preservation of
+representative equations and SI-unit macros. The indexed corpus is synthetic and redistributable.
+
+The complete `wordcraft-formats` suite passes with 261 tests. The changed crate passes Clippy with
+dependencies excluded. Repository-wide Clippy/CI evidence must distinguish resolver defects from
+warnings in unrelated workspace crates and is recorded in the M1 PR.
+
 ## Corpus structure
 
 ```

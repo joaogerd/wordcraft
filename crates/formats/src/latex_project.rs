@@ -301,6 +301,14 @@ mod tests {
         assert_eq!(r.files_read.len(), 3);
     }
     #[test]
+    fn resolves_indexed_multifile_fixture() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../tests/scientific-import/fixtures/multifile");
+        let r = load(&root, Path::new("main.tex")).unwrap();
+        assert!(r.source.contains("$E = mc^2$"));
+        assert!(r.source.contains("\\SI{42}{\\micro\\meter}"));
+        assert_eq!(r.files_read.len(), 3);
+    }
+    #[test]
     fn ignores_commented_and_escaped_commands() {
         let t = Tmp::new();
         t.put("main.tex", "% \\input{missing}\n\\% literal \\input{real}");
