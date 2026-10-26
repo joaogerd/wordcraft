@@ -21,16 +21,20 @@ These are **targets, not current measured performance**:
 
 Never average away a semantic failure with a good visual score.
 
-## M1 measured evidence (2026-10-23)
+## M1 measured evidence (2026-10-26)
 
 The resolver regression suite covers nested resolution behavior, parent traversal,
 Unix symlink escape, cycles, the 24-file nesting limit, invalid UTF-8, malformed include arguments,
 comments and escaped commands, inline and environmental verbatim content, and exact preservation of
 representative equations and SI-unit macros. The indexed corpus is synthetic and redistributable.
 
-The complete `wordcraft-formats` suite passes with 261 tests. The changed crate passes Clippy with
-dependencies excluded. Repository-wide Clippy/CI evidence must distinguish resolver defects from
-warnings in unrelated workspace crates and is recorded in the M1 PR.
+The complete `wordcraft-formats` suite passes with 262 tests. The changed crate passes Clippy with
+dependencies excluded. On 2026-10-24, `cargo xtask ci` passed formatting and stopped in workspace
+Clippy at `crates/proof/src/affix.rs:313` (`collapsible_match`), before tests, assets, layers, or WASM.
+The exact package Clippy command separately stopped in the dependency `wordcraft-doc` at
+`crates/doc/src/math_linear.rs:559` (`nonminimal_bool`). Neither warning is in the M1 diff.
+The independently run asset-attribution and dependency-layer gates pass. The WASM check is
+environment-blocked because the `wasm32-unknown-unknown` Rust target is not installed.
 
 ## Corpus structure
 

@@ -12,7 +12,7 @@ A milestone is **complete** only when code, tests, documentation and acceptance 
 | **M6** Product integration | CLI, GUI, structured report, progress and failures | Documented CLI and UI integration tests |
 | **M7** Stabilization | Cross-editor testing, fuzzing, robustness and release review | Versioned corpus and quality acceptance gates satisfied |
 
-## M1 acceptance record (2026-10-23)
+## M1 acceptance record (2026-10-26)
 
 Implementation is complete on `feature/scientific-latex-m1-foundation`; the milestone remains
 unpromoted until PR #1 is reviewed and merged into `develop`.
@@ -29,11 +29,16 @@ unpromoted until PR #1 is reviewed and merged into `develop`.
   whitespace. Equations, units, numbers, and unknown macros are preserved byte for byte.
 - [x] Synthetic fixtures are indexed in `tests/scientific-import/README.md` and the multifile fixture
   is exercised by a resolver regression test.
-- [x] `cargo fmt --all -- --check` and `cargo test -p wordcraft-formats` pass (261 tests).
+- [x] `cargo fmt --all -- --check` and `cargo test -p wordcraft-formats` pass (262 tests).
 - [x] `cargo clippy -p wordcraft-formats --all-targets --no-deps -- -D warnings` passes for the changed
   crate. The exact command without `--no-deps` is blocked by pre-existing `nonminimal_bool` warnings
   in `crates/doc/src/math_linear.rs:559`, outside this milestone.
-- [ ] `cargo xtask ci` and remote PR checks pass; record final results in PR #1 before review.
+- [ ] `cargo xtask ci` and remote PR checks pass. The 2026-10-24 local run passed `fmt` and then
+  stopped in workspace Clippy at the pre-existing `collapsible_match` warning in
+  `crates/proof/src/affix.rs:313`; later CI stages were skipped by the task runner.
+- [x] The skipped `assets` and `layers` gates pass when run independently.
+- [ ] The independent WASM gate could not run because the environment does not have the
+  `wasm32-unknown-unknown` Rust target installed; dependency downloads succeeded.
 
 ### Known M1 limitations
 

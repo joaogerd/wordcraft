@@ -319,7 +319,7 @@ mod tests {
     #[test]
     fn keeps_verbatim_environments_literal() {
         let t = Tmp::new();
-        let source = "Before\\n\\begin{verbatim}\\n\\input{missing} % literal\\n\\end{verbatim}\\nAfter";
+        let source = "Before\n\\begin{verbatim}\n\\input{missing} % literal\n\\end{verbatim}\nAfter";
         t.put("main.tex", source);
         let r = load(&t.0, Path::new("main.tex")).unwrap();
         assert_eq!(r.source, source);
@@ -347,9 +347,9 @@ mod tests {
     fn expansion_only_replaces_the_include_command() {
         let t = Tmp::new();
         t.put("main.tex", "Alpha\\input{part}Omega");
-        t.put("part.tex", "$\\alpha + \\beta$\\n\\SI{9.81}{m.s^{-2}}");
+        t.put("part.tex", "$\\alpha + \\beta$\n\\SI{9.81}{m.s^{-2}}");
         let r = load(&t.0, Path::new("main.tex")).unwrap();
-        assert_eq!(r.source, "Alpha$\\alpha + \\beta$\\n\\SI{9.81}{m.s^{-2}}Omega");
+        assert_eq!(r.source, "Alpha$\\alpha + \\beta$\n\\SI{9.81}{m.s^{-2}}Omega");
     }
     #[test]
     fn resolves_include_after_tex_whitespace_and_comment() {
@@ -380,6 +380,14 @@ mod tests {
             t.put(&format!("{depth}.tex"), &format!("\\input{{{}}}", depth + 1));
         }
         assert!(matches!(load(&t.0, Path::new("0.tex")), Err(ProjectError::TooDeep(MAX_DEPTH))));
+    }
+    #[test]
+    fn rejects_source_over_cumulative_byte_budget() {
+        let t = Tmp::new();
+        t.put("main.tex", "12345");
+        let root = fs::canonicalize(&t.0).unwrap();
+        let mut context = Context { root: root.clone(), stack: Vec::new(), files_read: Vec::new(), diagnostics: Vec::new(), remaining: 4 };
+        assert!(matches!(context.expand(&root.join("main.tex"), 0), Err(ProjectError::TooLarge(MAX_BYTES))));
     }
     #[test]
     fn rejects_non_utf8_source() {
