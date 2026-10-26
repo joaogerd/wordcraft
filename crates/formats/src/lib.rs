@@ -12,6 +12,7 @@
 pub mod comments;
 pub mod html;
 pub mod latex;
+pub mod latex_project;
 pub mod markdown;
 pub mod mathml;
 pub mod model;

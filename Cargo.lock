@@ -5299,6 +5299,7 @@ dependencies = [
  "log",
  "proptest",
  "quick-xml",
+ "thiserror 2.0.21",
  "wordcraft-doc",
  "wordcraft-geom",
  "zip",
